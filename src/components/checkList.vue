@@ -1,0 +1,140 @@
+<template>
+  <div class="check-container">
+    <div class="all" v-if="allList && allList.length > 0">
+      <a-checkbox
+        :disabled="disabled"
+        :checked="isCheckAll"
+        :indeterminate="indeterminate"
+        @change="onCheckAllChange"
+      >
+        全部
+      </a-checkbox>
+    </div>
+    <!-- :value="checkedList"存在bug, @change不能获取值 -->
+    <a-checkbox-group
+      :disabled="disabled"
+      v-model="checkedList"
+      :options="allList"
+      @change="onChange"
+    >
+      <!-- 自定义布局 -->
+      <!-- <a-checkbox v-for="item in allList" :key="item.value" :value="item.value"> {{item.label}} </a-checkbox> -->
+    </a-checkbox-group>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    fieldNames: {
+      type: Object,
+      default: () => {
+        return undefined;
+      },
+    },
+    boxList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    value: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    disabled: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
+    },
+  },
+  model: {
+    type: "value",
+    event: "change",
+  },
+  watch: {
+    boxList: {
+      handler() {
+        if (this.fieldNames && typeof this.fieldNames == "object") {
+          let fields = this.fieldNames;
+          this.allList = this.boxList.map((item) => {
+            return {
+              value: fields.value ? item[fields.value] : item.value,
+              label: fields.label ? item[fields.label] : item.label,
+            };
+          });
+        } else {
+          this.allList = JSON.parse(JSON.stringify(this.boxList));
+        }
+      },
+      immediate: true,
+    },
+    value: {
+      handler() {
+        this.checkedList = JSON.parse(JSON.stringify(this.value));
+        if (
+          this.checkedList &&
+          this.boxList &&
+          this.checkedList.length == this.boxList.length
+        ) {
+          this.isCheckAll = true;
+          this.indeterminate = false;
+        } else {
+          this.isCheckAll = false;
+          if (this.checkedList && this.checkedList.length != 0) {
+            this.indeterminate = true;
+          } else {
+            this.indeterminate = false;
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
+  data() {
+    return {
+      indeterminate: false,
+      isCheckAll: false,
+      allList: [],
+      checkedList: [],
+    };
+  },
+  methods: {
+    onCheckAllChange(e) {
+      this.isCheckAll = e.target.checked;
+      this.indeterminate = false;
+      let checkedList = e.target.checked
+        ? this.allList.map((item) => item.value)
+        : [];
+      this.$emit("change", checkedList);
+    },
+    onChange(checkedList) {
+      this.indeterminate =
+        this.checkedList.length > 0 &&
+        this.checkedList.length < this.allList.length;
+      this.isCheckAll = this.checkedList.length == this.allList.length;
+      this.$emit("change", checkedList);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.check-container::v-deep {
+  text-align: left;
+  padding: 10px;
+
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  .all {
+    padding: 10px;
+  }
+  .ant-checkbox-group-item {
+    min-width: 100px;
+    padding: 10px;
+  }
+}
+</style>
