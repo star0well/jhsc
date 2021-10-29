@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <detail-head @isDetail="handelBtn" @submit="handelSubmit"></detail-head>
-    <base-info :isDetail="isDetail" v-model="demo"></base-info>
-    <device-info :isDetail="isDetail"></device-info>
-    <device-check-info :isDetail="isDetail"></device-check-info>
-    <page-modal ref="pagemodalRef"></page-modal>
-  </div>
+  <detail-head @isDetail="handelBtn" @submit="handelSubmit"></detail-head>
+  <base-info :isDetail="isDetail" v-model="demo"></base-info>
+  <device-info :isDetail="isDetail"></device-info>
+  <device-check-info :isDetail="isDetail"></device-check-info>
 </template>
 
 <script>
@@ -15,14 +12,13 @@ import BaseInfo from "./cps/base_info/index";
 import DetailHead from "./cps/detail_head/index";
 import DeviceInfo from "./cps/device_info/index";
 import DeviceCheckInfo from "./cps/device_check_info/index";
-import PageModal from "@/components/dialog/index";
+
 export default defineComponent({
   components: {
     DetailHead,
     BaseInfo,
     DeviceInfo,
     DeviceCheckInfo,
-    PageModal,
   },
   setup() {
     const isDetail = ref(true);
@@ -34,7 +30,7 @@ export default defineComponent({
       isDetail.value = !isDetail.value;
     };
     const handelSubmit = () => {
-      pagemodalRef.value.isVisible = true;
+      console.log("确认按钮点击了");
     };
     return { isDetail, handelBtn, handelSubmit, pagemodalRef, demo };
   },

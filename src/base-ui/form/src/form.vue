@@ -30,6 +30,7 @@
 import { defineComponent, reactive } from "vue";
 import { detailConfig } from "../config/config";
 export default defineComponent({
+  props: {},
   setup() {
     const formState = reactive({
       设备名称: "",

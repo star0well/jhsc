@@ -1,13 +1,16 @@
 <template>
   <div class="detail-head">
     <div class="editor">
-      <div v-if="!isDetail">
-        <a-button class="confirm-btn" @click="handlBtn">编辑</a-button>
-      </div>
-      <div v-if="isDetail">
-        <a-button class="cancel-btn" @click="handlBtn">取消</a-button>
-        <a-button type="primary" @click="submit">确认</a-button>
-      </div>
+      <slot name="left"><div></div></slot>
+      <slot name="right">
+        <div v-if="!isDetail">
+          <a-button class="confirm-btn" @click="handlBtn">编辑</a-button>
+        </div>
+        <div v-if="isDetail">
+          <a-button class="cancel-btn" @click="handlBtn">取消</a-button>
+          <a-button type="primary" @click="submit">确认</a-button>
+        </div>
+      </slot>
     </div>
     <div class="buttom"></div>
   </div>
@@ -35,7 +38,7 @@ export default defineComponent({
 <style scoped>
 .editor {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   height: 80px;
   margin-right: 30px;

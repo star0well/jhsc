@@ -71,4 +71,9 @@ export default defineComponent({
 .showInfo {
   background-color: #f1f4fd;
 }
+.head-icon {
+  width: 6px;
+  height: 18px;
+  background-color: #5372e7;
+}
 </style>

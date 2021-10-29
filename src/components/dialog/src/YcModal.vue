@@ -7,6 +7,7 @@
       centered
       @ok="addBtn"
     >
+      <slot name="form"></slot>
       <yc-form ref="formRef"></yc-form>
     </a-modal>
   </div>
@@ -22,7 +23,7 @@ export default defineComponent({
     YcForm,
   },
   setup() {
-    const isVisible = ref(false);
+    const isVisible = ref(false); //外部引用通过ref 更改 ->pagemodalRef.value.isVisible = true;
     const formRef = ref();
     const addBtn = () => {
       console.log("提交数据");
